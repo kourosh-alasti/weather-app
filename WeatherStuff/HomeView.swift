@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct WeatherInfo: Decodable {
+struct WeatherInfo: Decodable, Encodable {
     let city: String
     let currentTempC: Double
     let minTempC: Double
@@ -71,6 +71,7 @@ struct HomeView: View {
                 Spacer()
             }
             .onAppear {
+                loadData()
                 fetchWeatherData(for: cityName)
             }
             .navigationTitle("Weather App")
@@ -85,6 +86,7 @@ struct HomeView: View {
                     let response = try JSONDecoder().decode(WeatherInfo.self, from: data)
                     DispatchQueue.main.async {
                         weatherData = response
+                        saveData(response)
                     }
                 } catch {
                     print("Error decoding weather data: \(error.localizedDescription)")
@@ -92,6 +94,24 @@ struct HomeView: View {
             }
             
         }.resume()
+    }
+    
+    func saveData(_ info:WeatherInfo){
+        let userstorage = UserDefaults.standard
+        if let encodedData = try? JSONEncoder().encode(info){
+            userstorage.set(encodedData, forKey: "weatherInfo" )
+            print("Saving Data")
+        }
+        
+    }
+    func loadData(){
+        let defaults = UserDefaults.standard
+        if let savedData = defaults.data(forKey: "weatherInfo"), let weatherInfo = try? JSONDecoder().decode(WeatherInfo.self, from: savedData){
+            weatherData = weatherInfo
+            print("Loading Data")
+        }else{
+            weatherData = nil
+        }
     }
 }
 
