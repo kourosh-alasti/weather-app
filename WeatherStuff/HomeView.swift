@@ -38,9 +38,12 @@ struct HomeView: View {
                             .fontWeight(.bold)
                         
                         HStack {
-                            Text(String(format:"Current Temperature:\n%.0f°F | %.2f°C", (((weather.currentTempC*9)/5)+32), weather.currentTempC))
-                                .font(.title)
-                            
+                            VStack{
+                                Text("Current Tmperature")
+                                    .font(.title)
+                                Text(String(format:"%.0f°F | %.2f°C", (((weather.currentTempC*9)/5)+32), weather.currentTempC))
+                                    .font(.title)
+                            }
                             Spacer()
                             
                             AsyncImage(url: URL(string: "https://\(weather.conditionIcon)")) { image in
