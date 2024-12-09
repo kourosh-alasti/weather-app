@@ -38,7 +38,7 @@ struct HomeView: View {
                             .fontWeight(.bold)
                         
                         HStack {
-                            Text("Current Temperature: \(weather.currentTempC)°C")
+                            Text(String(format:"Current Temperature:\n%.0f°F | %.2f°C", (((weather.currentTempC*9)/5)+32), weather.currentTempC))
                                 .font(.title)
                             
                             Spacer()
@@ -56,7 +56,7 @@ struct HomeView: View {
                         Text("Condition: \(weather.condition)")
                             .font(.title2)
                         
-                        Text("Min Temp: \(weather.minTempC)°C | Max Temp: \(weather.maxTempC)°C")
+                        Text(String(format:"Min Temp:  %.2f°C\nMax Temp: %.2f°C", weather.minTempC, weather.maxTempC))
                             .font(.title2)
                     }
                     .padding()
