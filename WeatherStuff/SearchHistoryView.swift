@@ -29,11 +29,15 @@ struct SearchHistoryView: View {
                                     VStack(alignment: .leading) {
                                         Text(city.city)
                                             .font(.headline)
-                                        Text(String(format: "%.1f degC", city.lastTemperature))
+                                        Text(String(format: "%.2f°C", city.lastTemperature))
                                             .font(.subheadline)
                                             .foregroundColor(.gray)
                                     }
                                     Spacer()
+                                    Text(String(format: "%.1f°F", (((city.lastTemperature*9)/5)+32)))
+                                        .font(.subheadline)
+                                        .foregroundColor(.gray)
+                                    Image(systemName: "camera")
                                 }
                             }
                         }
