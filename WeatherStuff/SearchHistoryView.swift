@@ -15,16 +15,17 @@ struct SearchHistoryView: View {
         NavigationView {
             VStack {
                 if isLoading {
-                    ProgressView("Loading Previous Searches...")
+                    ProgressView("Loading Search History...")
+                        .foregroundColor(.primary)
                         .padding()
                 } else if searchHistory.isEmpty {
                     Text("No Search History available.")
-                        .foregroundColor(.gray)
+                        .foregroundColor(.primary)
                 } else {
                     
                     List {
                         ForEach(searchHistory, id: \.xata_id) { city in
-                            NavigationLink(destination: CityInfoView(city: city.city)){
+                            NavigationLink(destination: CityInfoView(city: city.city, temperature: city.lastTemperature)){
                                 HStack {
                                     VStack(alignment: .leading) {
                                         Text(city.city)
