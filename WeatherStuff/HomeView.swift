@@ -32,17 +32,18 @@ struct HomeView: View {
                     }
                 
                 if let weather = weatherData  {
-                    VStack(alignment: .leading, spacing: 20) {
+                    VStack(alignment: .leading, spacing: 10) {
                         Text(weather.city)
                             .font(.largeTitle)
                             .fontWeight(.bold)
                         
                         HStack {
-                            VStack{
-                                Text("Current Tmperature")
-                                    .font(.title)
+                            VStack(alignment: .leading){
+                                Text("Current Temperature:")
+                                    .font(.title2)
+                                    .fontWeight(.semibold)
                                 Text(String(format:"%.0f°F | %.2f°C", (((weather.currentTempC*9)/5)+32), weather.currentTempC))
-                                    .font(.title)
+                                    .font(.title3)
                             }
                             Spacer()
                             
@@ -50,14 +51,22 @@ struct HomeView: View {
                                 image
                                     .resizable()
                                     .scaledToFit()
-                                    .frame(width: 40, height: 40)
+                                    .frame(width: 75,  height: 75)
                             } placeholder: {
                                 ProgressView()
                             }
+                            .background(.white)
+                            .clipShape(RoundedRectangle(cornerRadius: 12))
                         }
                         
-                        Text("Condition: \(weather.condition)")
-                            .font(.title2)
+                        HStack(spacing: 7){
+                            Text("Condition:")
+                                .font(.title2)
+                            Text(weather.condition)
+                                .font(.title2)
+                                .fontWeight(.semibold)
+                        }
+                       
                         
                         Text(String(format:"Min Temp:  %.2f°C\nMax Temp: %.2f°C", weather.minTempC, weather.maxTempC))
                             .font(.title2)
@@ -65,10 +74,18 @@ struct HomeView: View {
                     .padding()
                     
                 } else {
-                    Text("Loading weather information...")
-                        .font(.title2)
-                        .foregroundColor(.gray)
-                        .padding()
+                    if weatherData != nil {
+                        Text("Loading weather information...")
+                            .font(.title2)
+                            .foregroundColor(.gray)
+                            .padding()
+                    } else {
+                        Text("Search for a city to get started...")
+                            .font(.title2)
+                            .foregroundColor(.primary)
+                            .padding()
+                    }
+                
                 }
                 
                 Spacer()
@@ -113,6 +130,7 @@ struct HomeView: View {
         }
         
     }
+    
     func loadData(){
         let defaults = UserDefaults.standard
         if let savedData = defaults.data(forKey: "weatherInfo"), let weatherInfo = try? JSONDecoder().decode(WeatherInfo.self, from: savedData){
