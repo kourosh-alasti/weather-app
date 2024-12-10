@@ -78,6 +78,12 @@ struct HomeView: View {
                 fetchWeatherData(for: cityName)
             }
             .navigationTitle("Weather App")
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background {
+                Color.blue
+                    .opacity(0.4)
+                    .ignoresSafeArea()
+            }
         }
     }
     
