@@ -18,9 +18,6 @@ struct SplashView: View {
             AppLayoutView()
         } else {
             VStack {
-                // TODO: Add Animation or whatever
-                //Color.blue
-                //    .ignoresSafeArea(.all)
                 Text("Weather App")
                     .font(.largeTitle)
                     .fontWeight(.bold)
