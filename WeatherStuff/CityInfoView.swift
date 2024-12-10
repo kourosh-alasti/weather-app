@@ -59,8 +59,9 @@ struct ImagePicker: UIViewControllerRepresentable {
 
 struct CityInfoView: View {
     let city: String
+    let temperature: Double
     
-    @State private var temperature = "Unknown"
+    @State private var temp = ""
     @State private var photos: [UIImage] = []
     @State private var showCamera = false
     @State private var isUploading = false
@@ -70,7 +71,7 @@ struct CityInfoView: View {
     
     var body: some View {
         VStack {
-            Text("\(city) - \(temperature)")
+            Text("\(city) - \(temperature)°C")
                 .font(.headline)
             
             ScrollView(.horizontal) {
@@ -119,12 +120,12 @@ struct CityInfoView: View {
             fetchCityInfo(cityName: city) { cityInfo in
                 if let cityInfo = cityInfo {
                     DispatchQueue.main.async {
-                        temperature = String(format: "%.1f degC", cityInfo.lastTemperature)
+                        temp = String(format: "%.1f", cityInfo.lastTemperature)
                         photos = cityInfo.images?.compactMap { base64ToImage($0)} ?? []
                     }
                 } else {
                     DispatchQueue.main.async {
-                        temperature = "Unavailable Temperature"
+                        temp = String(format: "%.1f", temp)
                         photos = []
                     }
                 }
@@ -133,6 +134,11 @@ struct CityInfoView: View {
         }
         .sheet(isPresented: $showCamera, onDismiss: loadImage) {
             ImagePicker(image: $image)
+        }
+        .background {
+            Color.blue
+                .opacity(0.4)
+                .ignoresSafeArea()
         }
         
     }
@@ -247,5 +253,5 @@ struct CityInfoView: View {
 }
 
 #Preview {
-    CityInfoView(city: "Sample City")
+    CityInfoView(city: "Fullerton", temperature: 20.0)
 }
